@@ -40,7 +40,7 @@ def import_model_predict(model_path, value, debug=False):
 
 def execute_pipeline():
     # step 1
-    dataset_path = "compensation_dataset.csv"
+    dataset_path = "dataset/compensation_dataset.csv"
     X_train, X_test, y_train, y_test = feature_engineer_data(dataset_path)
 
     # step 2
