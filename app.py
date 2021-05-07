@@ -50,7 +50,7 @@ class SimplePredictor(Resource):
         print("data value received is - ", data)
 
         # make prediction
-        output = prediction_helper(model_path="model.pkl", data=data)
+        output = prediction_helper(model_path="model/model.pkl", data=data)
 
         print("output of prediction is ", output)
         # return output, 201
