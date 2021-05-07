@@ -1,0 +1,13 @@
+name: prediction-test
+
+dependencies:
+  - python==3.7
+  - pip
+  - pip:
+    - numpy
+    - matplotlib
+    - sklearn
+    - pandas
+    - flask
+    - flask_restplus
+    - Werkzeug==0.16.1
