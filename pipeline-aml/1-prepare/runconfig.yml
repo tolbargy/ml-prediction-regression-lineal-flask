@@ -1,4 +1,4 @@
-script: 1-prepare.py
+script: prepare.py
 arguments: [] # This is set in our pipeline definition script
 target: cpu-cluster
 framework: Python

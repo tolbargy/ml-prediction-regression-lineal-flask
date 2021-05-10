@@ -40,10 +40,10 @@ training_dataset = Dataset.get_by_name(ws, name_dataset)
 training_dataset_consumption = DatasetConsumptionConfig("training_dataset", training_dataset).as_download()
 
 # 7 === Step 1: Preparar datos
-prepare_runconfig = RunConfiguration.load("1-prepare-runconfig.yml")
+prepare_runconfig = RunConfiguration.load("runconfig.yml")
 prepare_step = PythonScriptStep(name="Preparar datos",
                         runconfig=prepare_runconfig,
-                        source_directory="./main",
+                        source_directory="./1-prepare",
                         script_name=prepare_runconfig.script,
                         arguments=['--data-input-path', training_dataset_consumption,
                                    '--data-output-path', prepared_data],
@@ -52,10 +52,10 @@ prepare_step = PythonScriptStep(name="Preparar datos",
                         allow_reuse=False)
 
 # 8 === Step 2: Entrenar modelo
-train_runconfig = RunConfiguration.load("2-train-runconfig.yml")
-train_step = PythonScriptStep(name="train-step",
+train_runconfig = RunConfiguration.load("runconfig.yml")
+train_step = PythonScriptStep(name="Entrenar modelo",
                         runconfig=train_runconfig,
-                        source_directory="./main",
+                        source_directory="./2-train",
                         script_name=train_runconfig.script,
                         arguments=['--data-path', prepared_data],
                         inputs=[prepared_data],

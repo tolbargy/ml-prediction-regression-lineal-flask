@@ -6,11 +6,10 @@ import os
 
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
-from azureml.core import Run
 
 def get_runtime_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--data-path', type=str)
+    parser.add_argument('--data-input-path', type=str)
     args = parser.parse_args()
     return args
 
@@ -27,14 +26,16 @@ def train_model(X_train, y_train):
     regressor.fit(X_train, y_train)
     return regressor
 
-def execute_pipeline():
+def main():
     args = get_runtime_args()
-    dataset_path = os.path.join(args.data_path, 'compensation_dataset.csv')
+    print('ARGS Test:')
+    print(args)
+    print(args.data_input_path)
+    dataset_path = os.path.join(args.data_input_path, 'compensation_dataset.csv')
     X_train, X_test, y_train, y_test = feature_engineer_data(dataset_path)
 
     model = train_model(X_train, y_train)
 
-# run the code
 if __name__ == '__main__':
-    execute_pipeline()
+    main()
 

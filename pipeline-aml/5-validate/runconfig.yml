@@ -1,4 +1,4 @@
-script: 5-validate.py
+script: validate.py
 arguments: [] # This is set in our pipeline definition script
 target: cpu-cluster
 framework: Python

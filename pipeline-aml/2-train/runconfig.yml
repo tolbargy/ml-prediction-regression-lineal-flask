@@ -1,4 +1,4 @@
-script: 2-train.py
+script: train.py
 arguments: [] # This is set in our pipeline definition script
 target: cpu-cluster
 framework: Python

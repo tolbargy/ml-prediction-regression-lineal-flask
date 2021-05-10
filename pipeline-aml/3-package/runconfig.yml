@@ -1,4 +1,4 @@
-script: 3-package.py
+script: package.py
 arguments: [] # This is set in our pipeline definition script
 target: cpu-cluster
 framework: Python
