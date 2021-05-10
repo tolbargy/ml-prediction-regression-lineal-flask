@@ -1,0 +1,11 @@
+name: ml-prediction-pipeline-aml
+
+dependencies:
+  - python==3.7
+  - pip
+  - pip:
+    - numpy
+    - matplotlib
+    - sklearn
+    - pandas
+    - azureml-defaults>=1.20.0
