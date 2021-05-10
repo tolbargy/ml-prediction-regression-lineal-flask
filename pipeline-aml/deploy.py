@@ -40,6 +40,7 @@ training_dataset = Dataset.get_by_name(ws, name_dataset)
 training_dataset_consumption = DatasetConsumptionConfig("training_dataset", training_dataset).as_download()
 
 # 7 === Step 1: Preparar datos
+prepared_data = PipelineData("prepared_data", datastore=default_datastore)
 prepare_runconfig = RunConfiguration.load("./1-prepare/runconfig.yml")
 prepare_step = PythonScriptStep(name="Preparar datos",
                         runconfig=prepare_runconfig,
