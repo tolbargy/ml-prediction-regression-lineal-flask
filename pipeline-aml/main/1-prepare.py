@@ -15,8 +15,8 @@ def main():
     # Create output dir
     os.makedirs(args.data_output_path, exist_ok=True)
 
-    input_file_path = os.path.join(args.data_input_path, 'german_credit_data.csv')
-    output_file_path = os.path.join(args.data_output_path, 'german_credit_data.csv')
+    input_file_path = os.path.join(args.data_input_path, 'compensation_dataset.csv')
+    output_file_path = os.path.join(args.data_output_path, 'compensation_dataset.csv')
 
     print(f'Reading data from {input_file_path} and writing processed output to {output_file_path}')
     print(f'Output dir: {os.listdir(args.data_output_path)}')

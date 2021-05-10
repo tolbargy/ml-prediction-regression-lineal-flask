@@ -35,16 +35,15 @@ ds.register(ws, name=name_dataset, description='Dataset compensacion salarial', 
 
 # 5 === Algo del dataset que aun no se que será
 training_dataset = Dataset.get_by_name(ws, name_dataset)
+
 # 6 === Download dataset to compute node - we can also use .as_mount() if the dataset does not fit the machine
 training_dataset_consumption = DatasetConsumptionConfig("training_dataset", training_dataset).as_download()
 
-
 # 7 === Step 1: Preparar datos
-prepare_runconfig = RunConfiguration.load("prepare_runconfig.yml")
-
-prepare_step = PythonScriptStep(name="prepare-step",
+prepare_runconfig = RunConfiguration.load("1-prepare-runconfig.yml")
+prepare_step = PythonScriptStep(name="Preparar datos",
                         runconfig=prepare_runconfig,
-                        source_directory="./",
+                        source_directory="./main",
                         script_name=prepare_runconfig.script,
                         arguments=['--data-input-path', training_dataset_consumption,
                                    '--data-output-path', prepared_data],
@@ -53,15 +52,15 @@ prepare_step = PythonScriptStep(name="prepare-step",
                         allow_reuse=False)
 
 # 8 === Step 2: Entrenar modelo
-train_runconfig = RunConfiguration.load("train_runconfig.yml")
-
+train_runconfig = RunConfiguration.load("2-train-runconfig.yml")
 train_step = PythonScriptStep(name="train-step",
                         runconfig=train_runconfig,
-                        source_directory="./",
+                        source_directory="./main",
                         script_name=train_runconfig.script,
                         arguments=['--data-path', prepared_data],
                         inputs=[prepared_data],
                         allow_reuse=False)
+                        
 # 9 === Step 3: Empaquetar modelo
 
 
