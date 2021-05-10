@@ -48,17 +48,10 @@ def import_model_predict(model_path, value, debug=False):
 
 def execute_pipeline():
     args = get_runtime_args()
-    # step 1
     dataset_path = os.path.join(args.data_path, 'compensation_dataset.csv')
     X_train, X_test, y_train, y_test = feature_engineer_data(dataset_path)
 
-    # step 2
     model = train_model(X_train, y_train)
-
-    # step 3
-    y_test_results = predict(model, X_test)
-    run = Run.get_context()
-    run.log('Resultados Y-Test', y_test_results)
 
 # run the code
 if __name__ == '__main__':

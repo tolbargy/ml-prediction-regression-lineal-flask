@@ -9,14 +9,14 @@ from azureml.core.compute_target import ComputeTargetException
 from azureml.core import Dataset
 from azureml.pipeline.core import PipelineEndpoint
 
-# Verificamos version del Azure ML SDK
+# 1 === Verificamos version del Azure ML SDK
 print("Azure ML SDK version:", azureml.core.VERSION)
 
-# Cargamos el workspace de AML
+# 2 === Cargamos el workspace de AML
 ws = Workspace.from_config()
 print(f'WS name: {ws.name}\nRegion: {ws.location}\nSubscription id: {ws.subscription_id}\nResource group: {ws.resource_group}')
 
-# Creacion del compute cluster si es que no existe
+# 3 === Creacion del compute cluster si es que no existe
 aml_compute_target = "cpu-cluster"
 try:
     aml_compute = AmlCompute(ws, aml_compute_target)
@@ -26,53 +26,61 @@ except ComputeTargetException:
     aml_compute = ComputeTarget.create(ws, aml_compute_target, config)
     aml_compute.wait_for_completion(show_output=True, min_node_count=None, timeout_in_minutes=20)
 
-# Obtenemos el dataset y lo subimos al worskpace
+# 4 === Obtenemos el dataset y lo subimos al worskpace
 name_dataset='compensation-dataset-train'
 datastore = ws.get_default_datastore()
 datastore.upload(src_dir='../dataset', target_path=name_dataset, overwrite=True)
 ds = Dataset.File.from_files(path=[(datastore, name_dataset)])
 ds.register(ws, name=name_dataset, description='Dataset compensacion salarial', create_new_version=True)
 
-# Algo del dataset que aun no se que será
+# 5 === Algo del dataset que aun no se que será
 training_dataset = Dataset.get_by_name(ws, name_dataset)
-# Download dataset to compute node - we can also use .as_mount() if the dataset does not fit the machine
+# 6 === Download dataset to compute node - we can also use .as_mount() if the dataset does not fit the machine
 training_dataset_consumption = DatasetConsumptionConfig("training_dataset", training_dataset).as_download()
 
 
-# Configuracion del pipeline
-runconfig = RunConfiguration.load("runconfig.yml")
+# 7 === Step 1: Preparar datos
+prepare_runconfig = RunConfiguration.load("prepare_runconfig.yml")
 
-train_step = PythonScriptStep(name="train-step",
-                        source_directory="./main",
-                        script_name="train.py",
-                        arguments=['--data-path', training_dataset_consumption],
+prepare_step = PythonScriptStep(name="prepare-step",
+                        runconfig=prepare_runconfig,
+                        source_directory="./",
+                        script_name=prepare_runconfig.script,
+                        arguments=['--data-input-path', training_dataset_consumption,
+                                   '--data-output-path', prepared_data],
                         inputs=[training_dataset_consumption],
-                        runconfig=runconfig,
+                        outputs=[prepared_data],
                         allow_reuse=False)
 
-steps = [train_step]
+# 8 === Step 2: Entrenar modelo
+train_runconfig = RunConfiguration.load("train_runconfig.yml")
 
-# Creamos el objeto de pipeline y lo validamos
+train_step = PythonScriptStep(name="train-step",
+                        runconfig=train_runconfig,
+                        source_directory="./",
+                        script_name=train_runconfig.script,
+                        arguments=['--data-path', prepared_data],
+                        inputs=[prepared_data],
+                        allow_reuse=False)
+# 9 === Step 3: Empaquetar modelo
+
+
+# 10 === Step 4: Registrar modelo
+
+
+# 11 === Step 5: Validar modelo
+
+
+# 12 === Configuracion del pipeline
+name = 'pipeline-regresion'
 pipeline = Pipeline(workspace=ws, steps=steps)
+steps = [prepare_step, train_step]
 pipeline.validate()
 
-# Enviar el pipeline frente a un experimento
-pipeline_run = Experiment(ws, 'pipeline-regresion').submit(pipeline)
+# 13 === Enviar el pipeline frente a un experimento
+pipeline_run = Experiment(ws, name).submit(pipeline)
 pipeline_run.wait_for_completion()
 
-# Publicamos el pipeline
-published_pipeline = pipeline.publish('pipeline-regresion')
+# 14 === Publicamos el pipeline
+published_pipeline = pipeline.publish(name)
 published_pipeline
-
-
-# Publicar el pipeline como endpoint
-endpoint_name = "pipeline-regresion-endpoint"
-try:
-   pipeline_endpoint = PipelineEndpoint.get(workspace=ws, name=endpoint_name)
-   # Add new default endpoint - only works from PublishedPipeline
-   pipeline_endpoint.add_default(published_pipeline)
-except Exception:
-    pipeline_endpoint = PipelineEndpoint.publish(workspace=ws,
-                                            name=endpoint_name,
-                                            pipeline=pipeline,
-                                            description="New Training Pipeline Endpoint")
