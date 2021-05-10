@@ -2,7 +2,7 @@
 from flask import Flask, request, jsonify
 from flask_restplus import Api, Resource, fields
 
-from linear_model import import_model_predict
+from train_local import import_model_predict
 
 from werkzeug.middleware.proxy_fix import ProxyFix
 
