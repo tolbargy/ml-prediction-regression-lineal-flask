@@ -47,6 +47,7 @@ def main():
     y_test_results = predict(model, X_test)
 
     # Exportando modelo
+    os.makedirs(args.model_path, exist_ok=True)
     model_path = os.path.join(args.model_path, args.name_model_file)
     export_model(model, model_path)
 
