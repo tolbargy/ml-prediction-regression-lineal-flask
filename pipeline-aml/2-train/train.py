@@ -28,9 +28,6 @@ def train_model(X_train, y_train):
 
 def main():
     args = get_runtime_args()
-    print('ARGS Test:')
-    print(args)
-    print(args.data_input_path)
     dataset_path = os.path.join(args.data_input_path, 'compensation_dataset.csv')
     X_train, X_test, y_train, y_test = feature_engineer_data(dataset_path)
 
