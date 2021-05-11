@@ -9,8 +9,9 @@ from sklearn.linear_model import LinearRegression
 
 def get_runtime_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--data-input-path', type=str)
-    parser.add_argument('--data-output-path', type=str)
+    parser.add_argument('--prepared_data_path', type=str)
+    parser.add_argument('--name_model_file', type=str)
+    parser.add_argument('--model_path', type=str)
     args = parser.parse_args()
     return args
 
@@ -29,7 +30,7 @@ def train_model(X_train, y_train):
 
 def main():
     args = get_runtime_args()
-    dataset_path = os.path.join(args.data_input_path, 'compensation_dataset.csv')
+    dataset_path = os.path.join(args.prepared_data_path, 'compensation_dataset.csv')
     X_train, X_test, y_train, y_test = feature_engineer_data(dataset_path)
 
     # step 2
@@ -39,7 +40,7 @@ def main():
     y_test_results = predict(model, X_test)
 
     # step 5
-    model_path = os.path.join(args.data_output_path, 'model.pkl')
+    model_path = os.path.join(args.model_path, name_model_file)
     export_model(model, model_path)
 
 if __name__ == '__main__':

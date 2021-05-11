@@ -23,6 +23,7 @@ name_dataset='compensation-dataset-train'
 location_local_dataset='../dataset'
 name_pipeline = 'pipeline-regresion'
 name_model = 'salary-compensation'
+name_model_file = name_model+'.pkl'
 
 # 4 === Creacion del compute cluster para el entrenamiento
 try:
@@ -52,8 +53,10 @@ prepare_step = PythonScriptStep(name="Preparar datos",
                         runconfig=prepare_runconfig,
                         source_directory="./1-prepare",
                         script_name=prepare_runconfig.script,
-                        arguments=['--dataset_path', dataset_consumption,
-                                   '--prepared_data_path', prepared_data],
+                        arguments= [
+                            '--dataset_path', dataset_consumption,
+                            '--prepared_data_path', prepared_data
+                        ],
                         inputs=[dataset_consumption],
                         outputs=[prepared_data],
                         allow_reuse=False)
@@ -65,9 +68,11 @@ train_step = PythonScriptStep(name="Entrenar modelo",
                         runconfig=train_runconfig,
                         source_directory="./2-train",
                         script_name=train_runconfig.script,
-                        arguments=['--prepared_data_path', prepared_data,
-                                   '--name_model', name_model,
-                                   '--model_path', model_path],
+                        arguments=[
+                            '--prepared_data_path', prepared_data,
+                            '--name_model_file', name_model_file,
+                            '--model_path', model_path
+                        ],
                         inputs=[prepared_data],
                         outputs=[model_path],
                         allow_reuse=False)
@@ -78,7 +83,11 @@ register_step = PythonScriptStep(name="Registrar modelo",
                         runconfig=register_runconfig,
                         source_directory="./3-register",
                         script_name=register_runconfig.script,
-                        arguments=['--model_path', model_path],
+                        arguments= [
+                            '--model_path', model_path
+                            '--name_model_file', name_model_file,
+                            '--name_model', name_model
+                        ],
                         inputs=[model_path],
                         allow_reuse=False)
 
@@ -88,7 +97,10 @@ validate_step = PythonScriptStep(name="Validar modelo",
                         runconfig=validate_runconfig,
                         source_directory="./4-validate",
                         script_name=validate_runconfig.script,
-                        arguments=['--model_path', model_path],
+                        arguments= [
+                            '--model_path', model_path,
+                            '--name_model_file', name_model_file
+                        ],
                         inputs=[model_path],
                         allow_reuse=False)
 
