@@ -84,7 +84,7 @@ register_step = PythonScriptStep(name="Registrar modelo",
                         source_directory="./3-register",
                         script_name=register_runconfig.script,
                         arguments= [
-                            '--model_path', model_path
+                            '--model_path', model_path,
                             '--name_model_file', name_model_file,
                             '--name_model', name_model
                         ],
