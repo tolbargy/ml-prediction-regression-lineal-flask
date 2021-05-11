@@ -10,6 +10,7 @@ from sklearn.linear_model import LinearRegression
 def get_runtime_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--data-input-path', type=str)
+    parser.add_argument('--data-output-path', type=str)
     args = parser.parse_args()
     return args
 
@@ -31,7 +32,15 @@ def main():
     dataset_path = os.path.join(args.data_input_path, 'compensation_dataset.csv')
     X_train, X_test, y_train, y_test = feature_engineer_data(dataset_path)
 
+    # step 2
     model = train_model(X_train, y_train)
+
+    # step 3
+    y_test_results = predict(model, X_test)
+
+    # step 5
+    model_path = os.path.join(args.data_output_path, 'model.pkl')
+    export_model(model, model_path)
 
 if __name__ == '__main__':
     main()
