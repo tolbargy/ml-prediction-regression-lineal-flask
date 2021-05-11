@@ -22,6 +22,7 @@ aml_compute_target_size = "STANDARD_D2_V2"
 name_dataset='compensation-dataset-train'
 location_local_dataset='../dataset'
 name_pipeline = 'pipeline-regresion'
+name_experiment = 'experiment-regresion'
 name_model = 'salary-compensation'
 name_model_file = name_model+'.pkl'
 
@@ -110,9 +111,9 @@ steps = [prepare_step, train_step, register_step, validate_step]
 pipeline = Pipeline(workspace=ws, steps=steps)
 pipeline.validate()
 
-# 13 === Enviar el pipeline frente a un experimento
-#pipeline_run = Experiment(ws, name_pipeline).submit(pipeline)
-#pipeline_run.wait_for_completion()
+# 13 === Ejecutar el pipeline frente a un experimento
+pipeline_run = Experiment(ws, name_experiment).submit(pipeline)
+pipeline_run.wait_for_completion()
 
 # 14 === Publicamos el pipeline
 published_pipeline = pipeline.publish(name_pipeline)

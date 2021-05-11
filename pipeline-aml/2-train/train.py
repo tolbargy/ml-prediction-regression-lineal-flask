@@ -28,18 +28,25 @@ def train_model(X_train, y_train):
     regressor.fit(X_train, y_train)
     return regressor
 
+def predict(regressor, X_test):
+    y_pred = regressor.predict(X_test)
+    return y_pred
+
+def export_model(regressor, model_path):
+    pickle.dump(regressor, open(model_path,'wb'))
+
 def main():
     args = get_runtime_args()
     dataset_path = os.path.join(args.prepared_data_path, 'compensation_dataset.csv')
     X_train, X_test, y_train, y_test = feature_engineer_data(dataset_path)
 
-    # step 2
+    # Entrenando
     model = train_model(X_train, y_train)
 
-    # step 3
+    # Testeando resultados
     y_test_results = predict(model, X_test)
 
-    # step 5
+    # Exportando modelo
     model_path = os.path.join(args.model_path, name_model_file)
     export_model(model, model_path)
 
