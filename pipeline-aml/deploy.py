@@ -79,6 +79,7 @@ register_step = PythonScriptStep(name="Registrar modelo",
                         source_directory="./3-register",
                         script_name=register_runconfig.script,
                         arguments=['--model_path', model_path],
+                        inputs=[model_path],
                         allow_reuse=False)
 
 # 11 === Step 4: Validar modelo
@@ -87,7 +88,8 @@ validate_step = PythonScriptStep(name="Validar modelo",
                         runconfig=validate_runconfig,
                         source_directory="./4-validate",
                         script_name=validate_runconfig.script,
-                        arguments=['--name_model', name_model],
+                        arguments=['--model_path', model_path],
+                        inputs=[model_path],
                         allow_reuse=False)
 
 
