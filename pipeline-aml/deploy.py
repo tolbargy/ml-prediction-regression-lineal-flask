@@ -58,7 +58,7 @@ train_step = PythonScriptStep(name="Entrenar modelo",
                         runconfig=train_runconfig,
                         source_directory="./2-train",
                         script_name=train_runconfig.script,
-                        arguments=['--data-path', prepared_data],
+                        arguments=['--data-input-path', prepared_data],
                         inputs=[prepared_data],
                         allow_reuse=False)
                         
