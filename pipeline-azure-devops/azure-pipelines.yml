@@ -12,6 +12,10 @@ steps:
     echo Add other tasks to build, test, and deploy your project.
     echo See https://aka.ms/yaml
   displayName: 'Run a multi-line script'
+
+- script: |
+    echo ${database-password}
+  displayName: 'Imprimiendo el secret antes'
 - task: AzureKeyVault@1
   inputs:
     azureSubscription: 'Suscripción de Visual Studio Enterprise - MPN(1)(cd58ccf3-0a1a-4f2f-8a74-57cad977ff68)'
