@@ -12,10 +12,14 @@ def get_runtime_args():
 
 def main():
     args = get_runtime_args()
-    context = Run.get_context()
+    run = Run.get_context()
     
-    context.register_model(
-        model_path=os.path.join(args.model_path, args.name_model_file),
+    full_path = os.path.join(args.model_path, args.name_model_file)
+    # Ironico hacer esto, ya que el archivo existe en el datastore pero igual toca subirlo
+    # https://stackoverflow.com/a/59694422
+    run.upload_file(full_path, full_path)
+    run.register_model(
+        model_path=full_path,
         model_name=args.name_model
     )
 
