@@ -18,7 +18,7 @@ steps:
   displayName: 'Imprimiendo el secret antes'
 - task: AzureKeyVault@1
   inputs:
-    azureSubscription: 'suscription-azure-jorge'
+    azureSubscription: 'suscripcion-clasica'
     KeyVaultName: 'key-vault-general'
     SecretsFilter: '*'
     RunAsPreJob: false
