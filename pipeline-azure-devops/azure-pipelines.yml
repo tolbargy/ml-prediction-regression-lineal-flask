@@ -25,7 +25,7 @@ steps:
     azureSubscription: $(service-principal-connection)
     KeyVaultName: 'key-vault-general'
     SecretsFilter: '*'
-    RunAsPreJob: false
+    RunAsPreJob: true
   displayName: 'Obteniendo key vault'
 
 - script: |
