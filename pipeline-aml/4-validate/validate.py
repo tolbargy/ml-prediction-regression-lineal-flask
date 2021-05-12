@@ -1,6 +1,8 @@
 import os
 import argparse
 from azureml.core import Run
+import numpy as np
+import pickle
 
 def get_runtime_args():
     parser = argparse.ArgumentParser()
