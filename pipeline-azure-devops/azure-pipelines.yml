@@ -9,6 +9,14 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
+- task: AzureKeyVault@1
+  inputs:
+    azureSubscription: $(service-principal-connection)
+    KeyVaultName: 'key-vault-general'
+    SecretsFilter: '*'
+    RunAsPreJob: false
+  displayName: 'Obteniendo key vault'
+
 - script: echo Hello, world!
   displayName: 'Run a one-line script'
 
@@ -16,18 +24,7 @@ steps:
     echo Add other tasks to build, test, and deploy your project.
     echo See https://aka.ms/yaml
   displayName: 'Run a multi-line script'
-
-- script: |
-    echo $(database-password)
-  displayName: 'Imprimiendo el secret antes'
-- task: AzureKeyVault@1
-  inputs:
-    azureSubscription: $(service-principal-connection)
-    KeyVaultName: 'key-vault-general'
-    SecretsFilter: '*'
-    RunAsPreJob: true
-  displayName: 'Obteniendo key vault'
-
+  
 - script: |
     echo $(database-password)
   displayName: 'Imprimiendo el secret'
