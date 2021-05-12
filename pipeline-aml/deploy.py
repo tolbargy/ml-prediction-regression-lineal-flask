@@ -108,7 +108,12 @@ validate_step = PythonScriptStep(name="Validar modelo",
 
 # 12 === Configuracion del pipeline
 validate_step.run_after(register_step) # Necesario para asegurar que primero registre el modelo y luego lo valide
-steps = [prepare_step, train_step, register_step, validate_step]
+steps = [
+    prepare_step, 
+    train_step, 
+    register_step, 
+    validate_step
+]
 pipeline = Pipeline(workspace=ws, steps=steps)
 pipeline.validate()
 
