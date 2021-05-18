@@ -1,14 +1,18 @@
+# Prediccion de regresion lineal de compensacion salarial respecto a los años de experiencia (Machine Learning Scikit-Learn)
+Principalmente para verificar el funcionamiento del modelo, se deben instalar las dependencias y librerias del archivo **conda.yml** 
 
-# Learning RESTful Simple ML Prediction
+Luego se debe ejecutar el script **train_local.py** para realizar el entrenamiento y generar el modelo en la carpeta **model/model.pkl**
 
-## flask-restplus based salary predictor
-This repo example predicts the salary given number of years of experience.
+Finalmente podemos ejecutar el script **app.py** para encender el servidor de Flask y poder hacer uso de los servicios web que hacen uso del modelo y predice la compensacion salarial
 
-## Model
-linear_model.py trains and saves the model to the disk.
+# Plantillas objetivos Azure Machine Learning Pipeline y Azure DevOps
+- Pipeline unicamente para Azure Machine Learning
+- Pipeline Azure DevOps con ARM (Azure Resource Manager)
+- Pipeline Azure DevOps con Terraform
+- Pipeline con Azure DevOps y Azure ML tambien
+- Con archivo **score.py** unicamente para deploy a inference cluster
+- Sin archivo **score.py** con multiples archivos para deploy inference cluster
 
-## Flask Server
-app.py manage the external facing APIs.
-
-## Make Requests
-make_requests.py has example code to test the end points.
+Referencias: 
+https://github.com/vilvainc/LinearRegressionPredictionRestPlus
+https://github.com/csiebler/mlops-demo
